@@ -8,9 +8,28 @@ int main()
 
     scanf("%f,%f,%f", &a, &b, &c);
 
-    D = sqrt(((b) * (b)) - (4 * a * c));
+    D = (((b) * (b)) - (4 * a * c));
+    if (D > 0)
+    {
+        D = sqrt(D);
+    }
+    else if (D < 0)
+    {
+        printf("No roots");
+        return 0;
+    }
 
-    if ((D == 0) && (a != 0))
+    if (a == 0 && b == 0 && c == 0)
+    {
+        printf("True for any X");
+    }
+
+    else if (a == 0 && b == 0 && c != 0)
+    {
+        printf("No roots");
+    }
+
+    else if ((D == 0) && (a != 0))
     {
         x = (-b) / 2 * a;
         printf("Answer: %.2f", x);
@@ -23,7 +42,7 @@ int main()
     {
         x1 = (-b + D) / 2 * a;
         x2 = (-b - D) / 2 * a;
-        printf("%.2f,%.2f", x1, x2);
+        printf(" Answers: %.2f,%.2f", x1, x2);
     }
 
     else if (a == 0)
