@@ -4,7 +4,7 @@
 int main()
 {
 
-    int n, i = 2;
+    int n, i = 2, reminder;
 
     do
     {
@@ -13,8 +13,22 @@ int main()
 
         if (n <= 1)
         {
-            printf("Put the correct values\n");
-            printf("_____________________________\n");
+            if (n == 1)
+            {
+                printf("1 is uncorrect number\n");
+                printf("_____________________________\n");
+            }
+            else if (n == 0)
+            {
+                printf("0 is uncorrect number\n");
+                printf("_____________________________\n");
+            }
+            else if (n < 0)
+            {
+                reminder = n;
+                printf("Put the correct values for n, %d is uncorrect, perhaps you meant %d\n", n, (-reminder));
+                printf("_____________________________\n");
+            }
         }
     } while (n <= 1);
 

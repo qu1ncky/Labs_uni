@@ -15,13 +15,41 @@ int max(int a, int b)
 int main()
 {
 
-    int a, b, countAll = 0;
+    int a, b, countAll = 0, reminderA, reminderB;
     bool flag = false;
 
     printf("Put value for a: ");
     scanf("%d", &a);
     printf("Put value for b: ");
     scanf("%d", &b);
+
+    while (a <= 0 || b <= 0)
+    {
+        if (a < 0)
+        {
+            reminderA = a;
+            printf("%d is uncorrect value for a, perhaps you meant %d\n", a, (-reminderA));
+            printf("Put the correct value for a: ");
+            scanf("%d", &a);
+        }
+        if (a == 0)
+        {
+            printf("0 is uncorrect value for a. Put the correct value for a: ");
+            scanf("%d", &a);
+        }
+        if (b < 0)
+        {
+            reminderB = b;
+            printf("%d is uncorrect value for b, perhaps you meant %d\n", b, (-reminderB));
+            printf("Put the correct value for b: ");
+            scanf("%d", &b);
+        }
+        if (b == 0)
+        {
+            printf("0 is uncorrect value for b. Put the correct value for b: ");
+            scanf("%d", &b);
+        }
+    }
 
     int array[max(a, b)][2];
     int size = (sizeof(array) / sizeof(array[0]));
@@ -31,16 +59,6 @@ int main()
         {
             array[i][j] = 0;
         }
-    }
-
-    while (a <= 0 || b <= 0)
-    {
-        printf("Enter the correct values\n");
-
-        printf("Put value for a: ");
-        scanf("%d", &a);
-        printf("Put value for b: ");
-        scanf("%d", &b);
     }
 
     while (b > 0 && a > 0)
