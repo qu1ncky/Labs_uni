@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 // N - кол-во входных чисел
-#define N 5
+#define N 100
 
 int main()
 {
@@ -16,6 +16,10 @@ int main()
     for (int i = 0; i < N; i++)
     {
         scanf("%d", &a);
+        if (a == 0)
+        {
+            break;
+        }
         array[i] = a;
     }
 
@@ -37,6 +41,7 @@ int main()
     }
 
     //Вывод массивов
+
     if (countMinus > 0)
     {
         printf("Negative number(s): ");
