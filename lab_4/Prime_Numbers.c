@@ -39,7 +39,7 @@ int main()
         {
             flag = true;
             int j = 2;
-            while (j < i)
+            while (j < (i / 2))
             {
                 if (i % j == 0)
                 {
