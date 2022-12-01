@@ -102,19 +102,23 @@ int linear_sort(int array[], int size)
 
     for (int i = 0; i < size - 1; i++)
     {
-        count++;
+
         min = i;
+        count++;
         for (int j = i + 1; j < size; j++)
         {
             count++;
+
             if (array[j] < array[min])
             {
                 min = j;
+                count += 2;
             }
         }
         temp = array[i];
         array[i] = array[min];
         array[min] = temp;
+        count += 6;
     }
     return count;
 }
@@ -128,17 +132,16 @@ int buble_sort(int array[], int size)
 
     for (int i = 0; i < size - 1; i++)
     {
-        buble_iteration++;
 
         for (int j = 0; j < size - i - 1; j++)
         {
-            buble_iteration++;
 
             if (array[j] > array[j + 1])
             {
                 temp = array[j];
                 array[j] = array[j + 1];
                 array[j + 1] = temp;
+                buble_iteration += 3;
             }
             else
             {
@@ -166,14 +169,14 @@ int insertion_sort(int array[], int size)
 
     for (int i = 0; i < size; i++)
     {
-        count++;
+
         int index = i;
         temp = array[i];
         while (index > 0 && array[index - 1] > temp)
         {
             array[index] = array[index - 1];
             index--;
-            count++;
+            count += 2;
         }
         array[index] = temp;
     }
