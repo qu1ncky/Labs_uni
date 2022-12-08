@@ -47,7 +47,7 @@ double ex(double x, int n)
 
     for (int i = 1; i <= n; i++)
     {
-        a = (a + x) / i;
+        a = (a * x) / i;
         sum += a;
         printf("Step %d -- %lf\n", i + 1, sum);
     }
