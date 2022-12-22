@@ -2,9 +2,13 @@
 #include <math.h>
 #include <stdbool.h>
 
-//СИНУС
+// СИНУС
 double sinx(double x, int n)
 {
+    while (x > 2 * M_PI && x > 0)
+    {
+        x -= 2 * M_PI;
+    }
     printf("SINX RESULT\n");
     double a = x;
     double sum = a;
@@ -19,9 +23,13 @@ double sinx(double x, int n)
     return sum;
 }
 
-//КОСИНУС
+// КОСИНУС
 double cosx(double x, int n)
 {
+    while (x > 2 * M_PI && x > 0)
+    {
+        x -= 2 * M_PI;
+    }
     printf("COSX RESULT\n");
     double a = 1;
     double sum = a;
@@ -37,7 +45,7 @@ double cosx(double x, int n)
     return sum;
 }
 
-//ЭКСПОНЕНТА
+// ЭКСПОНЕНТА
 double ex(double x, int n)
 {
     printf("EXPONENTA RESULTS\n");
@@ -70,7 +78,7 @@ int main()
         scanf("%d", &answer);
         switch (answer)
         {
-        //ВВВОД ПАРАМЕТРОВ
+        // ВВВОД ПАРАМЕТРОВ
         case 1:
             printf("Enter the X point: ");
             scanf("%lf", &point);
@@ -127,7 +135,7 @@ int main()
             printf("2. Taylor's formula for SIN fucntion\n");
             printf("3. Taylor's formula for COS fucntion\n");
             printf("4. Taylor's formula for exponent fucntion\n");
-            printf("5. Сomparison of the results of the Taylor's formula and the function in С ");
+            printf("5. Comparison of the results of the Taylor's formula and the function in C ");
 
         case 0:
             printf("Thanks for using program");

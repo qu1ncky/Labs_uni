@@ -5,7 +5,7 @@
 
 #define MAX 100000
 
-//ЛИНЕЙНЫЙ ПОИСК
+// ЛИНЕЙНЫЙ ПОИСК
 int linear_search(int array[], int N)
 {
     int key;
@@ -33,7 +33,7 @@ int linear_search(int array[], int N)
     }
 }
 
-//БИНАРНЫЙ ПОИСК
+// БИНАРНЫЙ ПОИСК
 int binary_search(int array[], int N)
 {
     int key;
@@ -71,7 +71,7 @@ int binary_search(int array[], int N)
     }
 }
 
-//БАРЬЕРНЫЙ ПОИСК
+// БАРЬЕРНЫЙ ПОИСК
 int barier_search(int array[], int N)
 {
     int key;
@@ -94,7 +94,7 @@ int barier_search(int array[], int N)
     }
 }
 
-//ЛИНЕЙНАЯ СОРТИРОВКА
+// ЛИНЕЙНАЯ СОРТИРОВКА
 int linear_sort(int array[], int size)
 {
     int count = 0;
@@ -102,7 +102,6 @@ int linear_sort(int array[], int size)
 
     for (int i = 0; i < size - 1; i++)
     {
-
         min = i;
         count++;
         for (int j = i + 1; j < size; j++)
@@ -123,7 +122,7 @@ int linear_sort(int array[], int size)
     return count;
 }
 
-//СОРТИРОВКА ПУЗЫРЬКОМ
+// СОРТИРОВКА ПУЗЫРЬКОМ
 int buble_sort(int array[], int size)
 {
     int buble_iteration = 0;
@@ -160,32 +159,27 @@ int buble_sort(int array[], int size)
     return buble_iteration;
 }
 
-//СОРТИРОВКА ВСТАВКОЙ
+// СОРТИРОВКА ВСТАВКОЙ
 int insertion_sort(int array[], int size)
 {
-
     int count = 0;
-    int temp;
 
-    for (int i = 0; i < size; i++)
+    for (int i = 1; i < size; i++)
     {
-
         int index = i;
-        temp = array[i];
-        while (index > 0 && array[index - 1] > temp)
+        while (index > 0 && array[index - 1] > array[index])
         {
-            array[index] = array[index - 1];
+            int temp = array[index - 1];
+            array[index - 1] = array[index];
+            array[index] = temp;
             index--;
             count += 2;
         }
-        array[index] = temp;
     }
-
     return count;
-    ;
 }
 
-//ВЫВОД МЕНЮ
+// ВЫВОД МЕНЮ
 int user_menu()
 {
     printf("                    USER MENU\n");
