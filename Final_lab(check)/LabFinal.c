@@ -167,14 +167,14 @@ int insertion_sort(int array[], int size)
     for (int i = 1; i < size; i++)
     {
         int index = i;
-        while (index > 0 && array[index - 1] > array[index])
+        int temp = array[i];
+        while (index > 0 && temp < array[index - 1])
         {
-            int temp = array[index - 1];
-            array[index - 1] = array[index];
-            array[index] = temp;
+            array[index] = array[index - 1];
             index--;
             count += 2;
         }
+        array[index] = temp;
     }
     return count;
 }
