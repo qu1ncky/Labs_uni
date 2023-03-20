@@ -10,7 +10,7 @@ void printMatrix(double **matrix, int size)
     {
         for (int j = 0; j <= size; j++)
         {
-            cout << setw(8) << matrix[i][j] << " ";
+            cout << setw(10) << matrix[i][j] << " ";
         }
         cout << endl;
     }
@@ -24,9 +24,12 @@ int main()
     cin >> size;
 
     double **matrix = new double *[size];
+    double **matrix_copy = new double *[size];
+
     for (int i = 0; i < size; i++)
     {
         matrix[i] = new double[size + 1];
+        matrix_copy[i] = new double[size + 1];
     }
 
     cout << "Enter the elements of the matrix: " << endl;
@@ -35,6 +38,7 @@ int main()
         for (int j = 0; j <= size; j++)
         {
             cin >> matrix[i][j];
+            matrix_copy[i][j] = matrix[i][j];
         }
     }
 
@@ -102,9 +106,9 @@ int main()
         double sum = 0;
         for (int j = 0; j < size; j++)
         {
-            sum += matrix[i][j] * solution[j];
+            sum += matrix_copy[i][j] * solution[j];
         }
-        cout << i + 1 << ". " << sum << " = " << matrix[i][size] << endl;
+        cout << i + 1 << ". " << sum << " = " << matrix_copy[i][size] << endl;
     }
 
     // free memory
