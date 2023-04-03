@@ -1,0 +1,6 @@
+5
+apple 10 3
+banana 30 2
+watermealon 50 10
+tomatoes 50 30
+cherry 70 10
