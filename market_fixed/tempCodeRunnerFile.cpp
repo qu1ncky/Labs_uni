@@ -1,0 +1,1 @@
+if (numProducts > 0)

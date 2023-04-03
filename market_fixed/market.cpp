@@ -109,8 +109,10 @@ void purchaseProducts(Product *products, int count)
         cout << "You purchased " << quantity << " " << name << " for $" << cost << "." << endl;
     }
 
+    cout << "----------------------------------------\n";
     cout << "Thank you for shopping with us!" << endl;
     cout << "Total cost: $" << totalCost << endl;
+    cout << "----------------------------------------\n";
 }
 
 bool fileExists(const string &filename)
@@ -178,13 +180,13 @@ int main()
         }
         else
         {
+            lineCount = countLinesInFile(filename);
             fin >> numProducts;
             products = new Product[numProducts];
-            for (int i = 0; i < numProducts; ++i)
+            for (int i = 0; i < lineCount - 1; ++i)
             {
                 fin >> products[i].name >> products[i].price >> products[i].quantity;
             }
-            lineCount = countLinesInFile(filename);
         }
         fin.close();
     }
@@ -202,9 +204,10 @@ int main()
         switch (choice)
         {
         case 1:
+            lineCount = countLinesInFile(filename);
             if (numProducts > 0)
             {
-                if (lineCount - 1 >= numProducts)
+                if (lineCount >= numProducts)
                 {
                     cout << "The inventory is full" << endl;
                 }
@@ -216,8 +219,6 @@ int main()
                         inputProduct(products[i]);
                     }
                 }
-
-                writeFile(products, numProducts);
             }
             else
             {
@@ -229,9 +230,8 @@ int main()
                     cout << "Product " << i + 1 << ":" << endl;
                     inputProduct(products[i]);
                 }
-                writeFile(products, numProducts);
             }
-
+            writeFile(products, numProducts);
             break;
         case 2:
 
@@ -257,4 +257,3 @@ int main()
 
     return 0;
 }
-///
