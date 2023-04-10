@@ -158,19 +158,19 @@ int countLinesInFile(const string &filename)
         return -1; // возвратить отрицательное значение в случае ошибки открытия файла
     }
 
-    int lineCount = 0;
-    string line;
+    int productCount = 0;
+    string line = " ";
     while (getline(file, line))
     {
-        ++lineCount;
+        ++productCount;
     }
 
-    return lineCount;
+    return productCount;
 }
 
 int main()
 {
-    int lineCount = 0;
+    int productCount = 0;
     string filename = "file.txt";
     int numProducts = 0;
     int choice;
@@ -186,10 +186,10 @@ int main()
         }
         else
         {
-            lineCount = countLinesInFile(filename);
+            productCount = countLinesInFile(filename);
             fin >> numProducts;
             products = new Product[numProducts];
-            for (int i = 0; i < lineCount - 1; ++i)
+            for (int i = 0; i < productCount - 1; ++i)
             {
                 fin >> products[i].name >> products[i].price >> products[i].quantity;
             }
@@ -210,16 +210,16 @@ int main()
         switch (choice)
         {
         case 1:
-            lineCount = countLinesInFile(filename);
+            productCount = countLinesInFile(filename) - 1;
             if (numProducts > 0)
             {
-                if (lineCount >= numProducts)
+                if (productCount >= numProducts)
                 {
                     cout << "The inventory is full" << endl;
                 }
                 else
                 {
-                    for (int i = lineCount - 1; i < numProducts; i++)
+                    for (int i = productCount; i < numProducts; i++)
                     {
                         cout << "Product " << i + 1 << ":" << endl;
                         inputProduct(products[i]);
@@ -238,15 +238,91 @@ int main()
                 }
             }
             writeFile(products, numProducts);
+
             break;
         case 2:
+            if (fileExists(filename))
+            {
+                ifstream fin("file.txt");
+                if (!fin.is_open())
+                {
+                    cout << "Failed to open file" << endl;
+                    return 1;
+                }
+                else
+                {
+                    productCount = countLinesInFile(filename);
+                    fin >> numProducts;
+                    products = new Product[numProducts];
+                    for (int i = 0; i < productCount - 1; ++i)
+                    {
+                        fin >> products[i].name >> products[i].price >> products[i].quantity;
+                    }
+                }
+                fin.close();
+            }
+            else
+            {
+                ofstream file("file.txt");
+                file.close();
+            }
 
             purchaseProducts(products, numProducts);
             writeFile(products, numProducts);
+            if (fileExists(filename))
+            {
+                ifstream fin("file.txt");
+                if (!fin.is_open())
+                {
+                    cout << "Failed to open file" << endl;
+                    return 1;
+                }
+                else
+                {
+                    productCount = countLinesInFile(filename);
+                    fin >> numProducts;
+                    products = new Product[numProducts];
+                    for (int i = 0; i < productCount - 1; ++i)
+                    {
+                        fin >> products[i].name >> products[i].price >> products[i].quantity;
+                    }
+                }
+                fin.close();
+            }
+            else
+            {
+                ofstream file("file.txt");
+                file.close();
+            }
             break;
         case 3:
             outputProducts(products, numProducts);
             writeFile(products, numProducts);
+            if (fileExists(filename))
+            {
+                ifstream fin("file.txt");
+                if (!fin.is_open())
+                {
+                    cout << "Failed to open file" << endl;
+                    return 1;
+                }
+                else
+                {
+                    productCount = countLinesInFile(filename);
+                    fin >> numProducts;
+                    products = new Product[numProducts];
+                    for (int i = 0; i < productCount - 1; ++i)
+                    {
+                        fin >> products[i].name >> products[i].price >> products[i].quantity;
+                    }
+                }
+                fin.close();
+            }
+            else
+            {
+                ofstream file("file.txt");
+                file.close();
+            }
             break;
         case 4:
             cout << "Goodbye!\n";

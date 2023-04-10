@@ -1,4 +1,4 @@
-5
-qwe 3 2
-zxc 4 5
-vbn 6 7
+3
+qwe 45 5
+zzz 5 12
+fff 5 3
