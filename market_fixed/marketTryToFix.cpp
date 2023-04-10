@@ -22,20 +22,6 @@ void printMenu()
 }
 
 // Функция для ввода данных товара
-void inputProduct(Product &product)
-{
-    cout << "Enter the name of product (20 symb is max): ";
-    cin >> product.name;
-
-    cout << "Enter the price of product: ";
-    cin >> product.price;
-
-    cout << "Enter the quantity of product: ";
-    cin >> product.quantity;
-
-    // очистка буфера ввода, чтобы избежать проблем при следующем вводе
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-}
 
 void outputProducts(const Product *products, int count)
 {
@@ -59,69 +45,163 @@ void outputProducts(const Product *products, int count)
     }
 }
 
-int findProductIndex(const Product *products, int count, const char *name)
+int countLinesInFile(const string &filename)
 {
-    for (int i = 0; i < count; i++)
+    ifstream file(filename);
+    if (!file.is_open())
     {
-        const Product &product = products[i];
-        if (strcmp(product.name, name) == 0)
-        {
-            return i;
-        }
-    }
-    return -1;
-}
-
-void purchaseProducts(Product *products, int count)
-{
-    cout << "Enter the products you want to buy. Enter 'done' when finished." << endl;
-    double totalCost = 0.0;
-    while (true)
-    {
-        char name[21];
-        cout << "Product name: ";
-        cin >> name;
-
-        if (strcmp(name, "done") == 0)
-        {
-            break;
-        }
-
-        int productIndex = findProductIndex(products, count, name);
-        if (productIndex == -1)
-        {
-            cout << "Sorry, we don't have that product." << endl;
-            continue;
-        }
-
-        Product &product = products[productIndex];
-        int quantity;
-        cout << "Enter quantity: ";
-        cin >> quantity;
-
-        if (quantity > product.quantity)
-        {
-            cout << "Sorry, we don't have that many " << name << "." << endl;
-            continue;
-        }
-
-        product.quantity -= quantity;
-        double cost = quantity * product.price;
-        totalCost += cost;
-
-        cout << "You purchased " << quantity << " " << name << " for $" << cost << "." << endl;
+        cerr << "Failed to open file: " << filename << endl;
+        return -1; // возвратить отрицательное значение в случае ошибки открытия файла
     }
 
-    cout << "----------------------------------------\n";
-    cout << "Thank you for shopping with us!" << endl;
-    cout << "Total cost: $" << totalCost << endl;
-    cout << "----------------------------------------\n";
+    int productCount = 0;
+    string line = " ";
+    while (getline(file, line))
+    {
+        ++productCount;
+    }
+
+    return productCount;
 }
 
 bool fileExists(const string &filename)
 {
     ifstream file(filename);
     return file.good();
+}
+
+bool readProductsFromFile(string filename, Product *&products, int &numProducts)
+{
+    if (fileExists(filename))
+    {
+        ifstream fin(filename);
+        if (!fin.is_open())
+        {
+            cout << "Failed to open file" << endl;
+            return false;
+        }
+        else
+        {
+            int productCount = countLinesInFile(filename);
+            fin >> numProducts;
+            products = new Product[numProducts];
+            for (int i = 0; i < productCount - 1; ++i)
+            {
+                fin >> products[i].name >> products[i].price >> products[i].quantity;
+            }
+        }
+        fin.close();
+        return true;
+    }
+    else
+    {
+        ofstream file("file.txt");
+        file.close();
+    }
+    return false;
+}
+
+int findProductIndex(Product *products, int count, const char *name)
+{
+    for (int i = 0; i < count; i++)
+    {
+        Product &product = products[i];
+        if (strcmp(product.name, name) == 0)
+        {
+            return i;
+        }
+    }
+
+    // If the product was not found in memory, check the file
+    ifstream inputFile("products.txt");
+    if (inputFile.is_open())
+    {
+        while (inputFile.good())
+        {
+            Product product;
+            inputFile.read(reinterpret_cast<char *>(&product), sizeof(product));
+            if (strcmp(product.name, name) == 0)
+            {
+                // Product found in file, add it to the array and return its index
+                products[count] = product;
+                inputFile.close();
+                return count;
+            }
+        }
+        inputFile.close();
+    }
+
+    return -1;
+}
+
+bool isProductExists(Product *products, int count, const char *name)
+{
+    for (int i = 0; i < count; i++)
+    {
+        Product &product = products[i];
+        if (strcmp(product.name, name) == 0)
+        {
+            return true;
+        }
+    }
+
+    // If the product was not found in memory, check the file
+    ifstream inputFile("products.txt");
+    if (inputFile.is_open())
+    {
+        while (inputFile.good())
+        {
+            Product product;
+            inputFile.read(reinterpret_cast<char *>(&product), sizeof(product));
+            if (strcmp(product.name, name) == 0)
+            {
+                // Product found in file, add it to the array and return true
+                products[count] = product;
+                return true;
+            }
+        }
+        inputFile.close();
+    }
+
+    return false;
+}
+
+void inputProduct(Product *products, int numProducts, int productCount)
+{
+    cout << "Enter 'done' when finished." << endl;
+    for (int i = productCount > 0 ? productCount : 0; i < numProducts; i++)
+    {
+        cout << "Product " << i + 1 << ":" << endl;
+        cout << "Enter the name of product (20 symb is max): ";
+        cin >> products[i].name;
+
+        if (strcmp(products[i].name, "done") == 0)
+        {
+            readProductsFromFile("file.txt", products, numProducts);
+            break;
+        }
+
+        // Поиск продукта с таким же именем
+        if (strcmp(products[i].name, "done") != 0 && !isProductExists(products, i, products[i].name))
+        {
+            // Продукт с таким именем не найден, добавляем новый продукт
+            cout << "Enter the price of product: ";
+            cin >> products[i].price;
+
+            cout << "Enter the quantity of product: ";
+            cin >> products[i].quantity;
+        }
+        else
+        {
+            // Продукт с таким именем уже существует, увеличиваем его количество
+
+            int index = findProductIndex(products, i, products[i].name);
+            cout << "Product already exists. Quantity will be increased." << endl;
+            cout << "Enter the quantity of product: ";
+            cin >> products[i].quantity;
+            products[index].quantity += products[i].quantity;
+        }
+    }
 }
 
 void writeFile(Product *products, int numProducts)
@@ -149,23 +229,64 @@ void writeFile(Product *products, int numProducts)
     fout.close();
 }
 
-int countLinesInFile(const string &filename)
+void purchaseProducts(Product *products, int count)
 {
-    ifstream file(filename);
-    if (!file.is_open())
+    const int MAX_PURCHASES = 100;
+    Product purchases[MAX_PURCHASES];
+    int purchasesCount = 0;
+    cout << "Enter the products you want to buy. Enter 'done' when finished." << endl;
+    double totalCost = 0.0;
+    while (true)
     {
-        cerr << "Failed to open file: " << filename << endl;
-        return -1; // возвратить отрицательное значение в случае ошибки открытия файла
+        char name[21];
+        cout << "Product name: ";
+        cin >> name;
+
+        if (strcmp(name, "done") == 0)
+        {
+            break;
+        }
+
+        int index = findProductIndex(products, count, name);
+        if (index == -1)
+        {
+            cout << "Product not found." << endl;
+            continue;
+        }
+
+        Product &product = products[index];
+        int quantity;
+        cout << "Enter the quantity of product: ";
+        cin >> quantity;
+
+        if (quantity > product.quantity)
+        {
+            cout << "Not enough products in stock." << endl;
+            continue;
+        }
+
+        product.quantity -= quantity;
+        totalCost += product.price * quantity;
+
+        // Добавляем продукт в список покупок
+        Product purchase = {0};
+        strcpy(purchase.name, product.name);
+        purchase.price = product.price;
+        purchase.quantity = quantity;
+        purchases[purchasesCount++] = purchase;
     }
 
-    int productCount = 0;
-    string line = " ";
-    while (getline(file, line))
+    // Выводим список покупок и общий чек
+    cout << "Purchases:\n";
+    cout << "----------------------------------------\n";
+    for (int i = 0; i < purchasesCount; i++)
     {
-        ++productCount;
+        const Product &product = purchases[i];
+        cout << i + 1 << ". " << product.name << " " << product.price << "$ - " << product.quantity << endl;
     }
-
-    return productCount;
+    cout << "----------------------------------------\n";
+    cout << "Thank you for shopping with us!\n";
+    cout << "Total cost: " << totalCost << "$\n";
 }
 
 int main()
@@ -176,31 +297,7 @@ int main()
     int choice;
     Product *products = nullptr;
 
-    if (fileExists(filename))
-    {
-        ifstream fin("file.txt");
-        if (!fin.is_open())
-        {
-            cout << "Failed to open file" << endl;
-            return 1;
-        }
-        else
-        {
-            productCount = countLinesInFile(filename);
-            fin >> numProducts;
-            products = new Product[numProducts];
-            for (int i = 0; i < productCount - 1; ++i)
-            {
-                fin >> products[i].name >> products[i].price >> products[i].quantity;
-            }
-        }
-        fin.close();
-    }
-    else
-    {
-        ofstream file("file.txt");
-        file.close();
-    }
+    readProductsFromFile(filename, products, numProducts);
 
     do
     {
@@ -219,11 +316,12 @@ int main()
                 }
                 else
                 {
-                    for (int i = productCount; i < numProducts; i++)
-                    {
-                        cout << "Product " << i + 1 << ":" << endl;
-                        inputProduct(products[i]);
-                    }
+                    inputProduct(products, numProducts, productCount);
+                    // for (int i = productCount; i < numProducts; i++)
+                    // {
+                    //     cout << "Product " << i + 1 << ":" << endl;
+                    //     inputProduct(products[i]);
+                    // }
                 }
             }
             else
@@ -231,98 +329,26 @@ int main()
                 cout << "Enter the quantity of the product in stock: ";
                 cin >> numProducts;
                 products = new Product[numProducts];
-                for (int i = 0; i < numProducts; i++)
-                {
-                    cout << "Product " << i + 1 << ":" << endl;
-                    inputProduct(products[i]);
-                }
+                inputProduct(products, numProducts, productCount);
+                // for (int i = 0; i < numProducts; i++)
+                // {
+                //     cout << "Product " << i + 1 << ":" << endl;
+                //     inputProduct(products[i]);
+                // }
             }
             writeFile(products, numProducts);
 
             break;
         case 2:
-            if (fileExists(filename))
-            {
-                ifstream fin("file.txt");
-                if (!fin.is_open())
-                {
-                    cout << "Failed to open file" << endl;
-                    return 1;
-                }
-                else
-                {
-                    productCount = countLinesInFile(filename);
-                    fin >> numProducts;
-                    products = new Product[numProducts];
-                    for (int i = 0; i < productCount - 1; ++i)
-                    {
-                        fin >> products[i].name >> products[i].price >> products[i].quantity;
-                    }
-                }
-                fin.close();
-            }
-            else
-            {
-                ofstream file("file.txt");
-                file.close();
-            }
-
+            readProductsFromFile(filename, products, numProducts);
             purchaseProducts(products, numProducts);
             writeFile(products, numProducts);
-            if (fileExists(filename))
-            {
-                ifstream fin("file.txt");
-                if (!fin.is_open())
-                {
-                    cout << "Failed to open file" << endl;
-                    return 1;
-                }
-                else
-                {
-                    productCount = countLinesInFile(filename);
-                    fin >> numProducts;
-                    products = new Product[numProducts];
-                    for (int i = 0; i < productCount - 1; ++i)
-                    {
-                        fin >> products[i].name >> products[i].price >> products[i].quantity;
-                    }
-                }
-                fin.close();
-            }
-            else
-            {
-                ofstream file("file.txt");
-                file.close();
-            }
+            readProductsFromFile(filename, products, numProducts);
             break;
         case 3:
             outputProducts(products, numProducts);
             writeFile(products, numProducts);
-            if (fileExists(filename))
-            {
-                ifstream fin("file.txt");
-                if (!fin.is_open())
-                {
-                    cout << "Failed to open file" << endl;
-                    return 1;
-                }
-                else
-                {
-                    productCount = countLinesInFile(filename);
-                    fin >> numProducts;
-                    products = new Product[numProducts];
-                    for (int i = 0; i < productCount - 1; ++i)
-                    {
-                        fin >> products[i].name >> products[i].price >> products[i].quantity;
-                    }
-                }
-                fin.close();
-            }
-            else
-            {
-                ofstream file("file.txt");
-                file.close();
-            }
+            readProductsFromFile(filename, products, numProducts);
             break;
         case 4:
             cout << "Goodbye!\n";

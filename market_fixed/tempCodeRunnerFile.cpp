@@ -1,1 +1,2 @@
-if (numProducts > 0)
+
+    }
