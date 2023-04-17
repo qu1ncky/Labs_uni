@@ -22,29 +22,6 @@ void printMenu()
     cout << "4. Exit.\n";
 }
 
-// int IndexProductInproducts(Product *products, char *name, int currentProducts)
-// {
-
-//     int index = -1;
-//     for (int j = 0; j < currentProducts; j++)
-//     {
-//         bool other = true;
-//         for (int i = 0; products[j].name[i] != '\0' || name[i] != '\0'; i++)
-//         {
-//             if (products[j].name[i] > name[i] || products[j].name[i] < name[i])
-//             {
-//                 other = false;
-//                 break;
-//             }
-//         }
-//         if (other)
-//         {
-//             index = j;
-//         }
-//     }
-//     return index;
-// }
-
 int findProductIndex(Product *products, char *name, int currentProducts)
 {
     for (int i = 0; i < currentProducts; i++)
@@ -146,59 +123,6 @@ void outputProducts(const Product *products, int count)
         }
     }
 }
-
-// void purchaseProducts(product *products, int &currentProducts, list<product> &check)
-// {
-//     char name[MAX];
-//     int index, answer;
-//     double finalPrice = 0;
-//     cout << "Введите имя товара: ";
-//     cin.ignore(); // игнорирует \n
-//     cin.get(name, MAX);
-
-//     index = IndexProductInproducts(products, name, currentProducts);
-//     if (index == -1)
-//     {
-//         cout << "\nТовара нет в списке\n";
-//     }
-//     else
-//     {
-//         product buy;
-//         int count;
-//         do
-//         {
-//             cout << "Введите количество товара: " << '\n';
-//             cin >> count;
-//         } while ((count <= 0) || (count > products->count));
-
-//         strcpy_s(buy.name, name);
-//         buy.count = count;
-//         buy.price = products[index].price;
-
-//         check.push_back(buy); // добавление в чек товара
-
-//         products[index].count -= count;
-
-//         if (products[index].count == 0)
-//             productRemove(products, index, currentProducts);
-//     }
-//     cout << "Хотите купить другой товар? 1-да 2-нет\n";
-//     cin >> answer;
-//     if (answer == 1)
-//         purchaseProducts(products, currentProducts, check);
-//     else
-//     {
-//         cout << "Чек:\n";
-//         for (product n : check)
-//         {
-//             cout << n.name << ' ' << n.price << ' ' << n.count << "шт"
-//                  << "\n";
-//             finalPrice += n.price * n.count;
-//         }
-//         cout << endl;
-//         cout << "Итого: " << finalPrice << endl;
-//     }
-// }
 
 void purchaseProducts(Product *products, int &currentProducts)
 {
