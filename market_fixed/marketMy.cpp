@@ -70,7 +70,7 @@ bool fileExists(const string &filename)
     return file.good();
 }
 
-bool readProductsFromFile(string filename, Product *&products, int &numProducts)
+bool readProductsFromFile(string filename, Product *&products, int &count)
 {
     if (fileExists(filename))
     {
@@ -83,8 +83,8 @@ bool readProductsFromFile(string filename, Product *&products, int &numProducts)
         else
         {
             int productCount = countLinesInFile(filename);
-            fin >> numProducts;
-            products = new Product[numProducts];
+            fin >> count;
+            products = new Product[count];
             for (int i = 0; i < productCount - 1; ++i)
             {
                 fin >> products[i].name >> products[i].price >> products[i].quantity;
@@ -110,25 +110,6 @@ int findProductIndex(Product *products, int count, const char *name)
         {
             return i;
         }
-    }
-
-    // If the product was not found in memory, check the file
-    ifstream inputFile("products.txt");
-    if (inputFile.is_open())
-    {
-        while (inputFile.good())
-        {
-            Product product;
-            inputFile.read(reinterpret_cast<char *>(&product), sizeof(product));
-            if (strcmp(product.name, name) == 0)
-            {
-                // Product found in file, add it to the array and return its index
-                products[count] = product;
-                inputFile.close();
-                return count;
-            }
-        }
-        inputFile.close();
     }
 
     return -1;
@@ -166,18 +147,24 @@ bool isProductExists(Product *products, int count, const char *name)
     return false;
 }
 
-void inputProduct(Product *products, int numProducts, int productCount)
+void inputProduct(Product *products, int numProducts, int &productCount)
 {
     cout << "Enter 'done' when finished." << endl;
     for (int i = productCount > 0 ? productCount : 0; i < numProducts; i++)
     {
+        int countInput = 0;
         cout << "Product " << i + 1 << ":" << endl;
         cout << "Enter the name of product (20 symb is max): ";
         cin >> products[i].name;
 
+        if (products[i].name != "done")
+        {
+            countInput++;
+            productCount += countInput;
+        }
+
         if (strcmp(products[i].name, "done") == 0)
         {
-            readProductsFromFile("file.txt", products, numProducts);
             break;
         }
 
@@ -270,7 +257,7 @@ void purchaseProducts(Product *products, int count)
 
         // Добавляем продукт в список покупок
         Product purchase = {0};
-        strcpy(purchase.name, product.name);
+        strcpy_s(purchase.name, product.name);
         purchase.price = product.price;
         purchase.quantity = quantity;
         purchases[purchasesCount++] = purchase;
@@ -317,11 +304,6 @@ int main()
                 else
                 {
                     inputProduct(products, numProducts, productCount);
-                    // for (int i = productCount; i < numProducts; i++)
-                    // {
-                    //     cout << "Product " << i + 1 << ":" << endl;
-                    //     inputProduct(products[i]);
-                    // }
                 }
             }
             else
@@ -330,13 +312,8 @@ int main()
                 cin >> numProducts;
                 products = new Product[numProducts];
                 inputProduct(products, numProducts, productCount);
-                // for (int i = 0; i < numProducts; i++)
-                // {
-                //     cout << "Product " << i + 1 << ":" << endl;
-                //     inputProduct(products[i]);
-                // }
             }
-            writeFile(products, numProducts);
+            writeFile(products, productCount);
 
             break;
         case 2:
@@ -346,9 +323,11 @@ int main()
             readProductsFromFile(filename, products, numProducts);
             break;
         case 3:
-            outputProducts(products, numProducts);
-            writeFile(products, numProducts);
-            readProductsFromFile(filename, products, numProducts);
+            productCount = countLinesInFile(filename) - 1;
+            readProductsFromFile(filename, products, productCount);
+            // writeFile(products, numProducts);
+            productCount = countLinesInFile(filename) - 1;
+            outputProducts(products, productCount);
             break;
         case 4:
             cout << "Goodbye!\n";
