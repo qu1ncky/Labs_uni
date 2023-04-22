@@ -160,12 +160,8 @@ void purchaseProducts(Product *products, int &currentProducts)
             continue;
         }
 
-        product.count -= quantity;
-        if (products[index].count == 0)
-        {
-            productRemove(products, index, currentProducts);
-        }
         totalCost += product.price * quantity;
+        product.count -= quantity;
 
         // Проверяем, есть ли продукт уже в списке покупок
         bool found = false;
@@ -189,9 +185,15 @@ void purchaseProducts(Product *products, int &currentProducts)
             purchase.count = quantity;
             purchases[purchasesCount++] = purchase;
         }
+
+        if (products[index].count == 0)
+        {
+            productRemove(products, index, currentProducts);
+        }
     }
 
     // Выводим список покупок и общий чек
+
     cout << "Purchases:\n";
     cout << "----------------------------------------\n";
     for (int i = 0; i < purchasesCount; i++)
@@ -202,18 +204,58 @@ void purchaseProducts(Product *products, int &currentProducts)
     cout << "----------------------------------------\n";
     cout << "Thank you for shopping with us!\n";
     cout << "Total cost: " << totalCost << "$\n";
+    cout << "----------------------------------------\n";
 }
 
-void writeFile(ofstream &fileOut, int currentProducts, Product *products, int size)
+// void writeFile(ofstream &fileOut, int currentProducts, Product *products, int size)
+// {
+//     fileOut << size << endl;
+//     for (int i = 0; i < currentProducts; i++)
+//     {
+//         fileOut << products[i].name << endl;
+//         fileOut << products[i].price << endl;
+//         fileOut << products[i].count << endl;
+//     }
+//     fileOut.close();
+// }
+
+void writeToFile(Product *products, int size, int currentProducts, string filename)
 {
-    fileOut << size << endl;
-    for (int i = 0; i < currentProducts; i++)
+    ofstream fout(filename);
+
+    if (fout.is_open())
     {
-        fileOut << products[i].name << endl;
-        fileOut << products[i].price << endl;
-        fileOut << products[i].count << endl;
+        fout << size << endl;
+        for (int i = 0; i < currentProducts; i++)
+        {
+            fout << products[i].name << " " << products[i].price << " " << products[i].count << endl;
+        }
+        fout.close();
+        cout << "Data saved to file." << endl;
     }
-    fileOut.close();
+    else
+    {
+        cout << "Unable to open file." << endl;
+    }
+}
+
+int countLinesInFile(const string &filename)
+{
+    ifstream file(filename);
+    if (!file.is_open())
+    {
+        cerr << "Failed to open file: " << filename << endl;
+        return -1; // возвратить отрицательное значение в случае ошибки открытия файла
+    }
+
+    int productCount = 0;
+    string line = " ";
+    while (getline(file, line))
+    {
+        ++productCount;
+    }
+
+    return productCount;
 }
 
 int main()
@@ -241,12 +283,12 @@ int main()
 
     if (fileExists(filename))
     {
-        int i = 0;
-        while (fileIn.getline(products[i].name, MAX) && fileIn >> products[i].price >> products[i].count)
+        currentProducts = countLinesInFile(filename) - 1;
+        for (int i = 0; i < currentProducts; i++)
         {
+            fileIn.getline(products[i].name, MAX, ' ');
+            fileIn >> products[i].price >> products[i].count;
             fileIn.ignore();
-            i++;
-            currentProducts++;
         }
     }
     fileIn.close();
@@ -262,7 +304,7 @@ int main()
         case 1:
 
             input(products, currentProducts, size);
-            writeFile(fileOut, currentProducts, products, size);
+            writeToFile(products, size, currentProducts, filename);
             break;
         case 2:
 
@@ -273,17 +315,17 @@ int main()
             {
                 purchaseProducts(products, currentProducts);
             }
-            writeFile(fileOut, currentProducts, products, size);
+            writeToFile(products, size, currentProducts, filename);
             break;
 
         case 3:
             outputProducts(products, currentProducts);
-            writeFile(fileOut, currentProducts, products, size);
+            writeToFile(products, size, currentProducts, filename);
             break;
 
         case 4:
             cout << "Goodbye!\n";
-            writeFile(fileOut, currentProducts, products, size);
+            writeToFile(products, size, currentProducts, filename);
             break;
 
         default:
