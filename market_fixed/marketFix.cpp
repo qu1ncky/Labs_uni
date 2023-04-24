@@ -19,7 +19,7 @@ void printMenu()
     cout << "1. Add product to inventory.\n";
     cout << "2. Purchase a product.\n";
     cout << "3. Print the list of products.\n";
-    cout << "4. Exit.\n";
+    cout << "4. Exit.\n\n";
 }
 
 int findProductIndex(Product *products, char *name, int currentProducts)
@@ -193,7 +193,6 @@ void purchaseProducts(Product *products, int &currentProducts)
     }
 
     // Выводим список покупок и общий чек
-
     cout << "Purchases:\n";
     cout << "----------------------------------------\n";
     for (int i = 0; i < purchasesCount; i++)
@@ -207,18 +206,6 @@ void purchaseProducts(Product *products, int &currentProducts)
     cout << "----------------------------------------\n";
 }
 
-// void writeFile(ofstream &fileOut, int currentProducts, Product *products, int size)
-// {
-//     fileOut << size << endl;
-//     for (int i = 0; i < currentProducts; i++)
-//     {
-//         fileOut << products[i].name << endl;
-//         fileOut << products[i].price << endl;
-//         fileOut << products[i].count << endl;
-//     }
-//     fileOut.close();
-// }
-
 void writeToFile(Product *products, int size, int currentProducts, string filename)
 {
     ofstream fout(filename);
@@ -231,7 +218,8 @@ void writeToFile(Product *products, int size, int currentProducts, string filena
             fout << products[i].name << " " << products[i].price << " " << products[i].count << endl;
         }
         fout.close();
-        cout << "Data saved to file." << endl;
+        cout << "Data saved to file." << endl
+             << endl;
     }
     else
     {
@@ -245,7 +233,7 @@ int countLinesInFile(const string &filename)
     if (!file.is_open())
     {
         cerr << "Failed to open file: " << filename << endl;
-        return -1; // возвратить отрицательное значение в случае ошибки открытия файла
+        return -1;
     }
 
     int productCount = 0;

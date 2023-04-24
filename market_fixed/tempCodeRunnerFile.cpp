@@ -1,1 +1,0 @@
-writeFile(fileOut, currentProducts, products, size);

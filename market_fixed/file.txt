@@ -1,5 +1,6 @@
-4
-qwe 5 5
-zxc 6 6
-qqq 6 15
-aaa 56 12
+5
+apple 6 9
+orange 7 11
+bread 7 2
+zxc 6 11
+qwe 7 12
