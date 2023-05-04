@@ -38,52 +38,52 @@ int findProductIndex(Product *products, char *name, int currentProducts)
 
 void input(Product *products, int &currentProducts, int size)
 {
-    if (currentProducts < size)
-    {
-        char name[MAX];
-        double price;
-        int count;
-        cout << "Enter the name of product: ";
-        cin.ignore();
-        cin.get(name, MAX);
-        int index = findProductIndex(products, name, currentProducts);
-        if (index == -1)
-        {
-            strcpy_s(products[currentProducts].name, name);
-            do
-            {
-                cout << "Enter the price of product: ";
-                cin >> price;
-            } while (price <= 0);
-            products[currentProducts].price = price;
-            do
-            {
-                cout << "Enter the quantity of product: ";
-                cin >> count;
-            } while (count <= 0);
-            products[currentProducts].count = count;
 
-            currentProducts++;
-        }
-        else
+    char name[MAX];
+    double price;
+    int count;
+    cout << "Enter the name of product: ";
+    cin.ignore();
+    cin.get(name, MAX);
+    int index = findProductIndex(products, name, currentProducts);
+
+    if (index == -1 && currentProducts < size)
+    {
+        strcpy_s(products[currentProducts].name, name);
+        do
         {
-            int quantity;
-            cout << "Product already exists. Quantity will be increased." << endl;
+            cout << "Enter the price of product: ";
+            cin >> price;
+        } while (price <= 0);
+        products[currentProducts].price = price;
+        do
+        {
             cout << "Enter the quantity of product: ";
-            cin >> quantity;
-            products[index].count += quantity;
-        }
-        int answer;
-        cout << "Add another product? 0 - No, 1 - Yes\nAnswer: ";
-        cin >> answer;
-        if (answer == 1)
-        {
-            input(products, currentProducts, size);
-        }
+            cin >> count;
+        } while (count <= 0);
+        products[currentProducts].count = count;
+
+        currentProducts++;
+    }
+    if (index != -1 && currentProducts <= size)
+    {
+        int quantity;
+        cout << "Product already exists. Quantity will be increased." << endl;
+        cout << "Enter the quantity of product: ";
+        cin >> quantity;
+        products[index].count += quantity;
     }
     else
     {
         cout << "Inventory is full" << endl;
+    }
+
+    int answer;
+    cout << "Add another product? 0 - No, 1 - Yes\nAnswer: ";
+    cin >> answer;
+    if (answer == 1)
+    {
+        input(products, currentProducts, size);
     }
 }
 
