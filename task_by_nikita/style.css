@@ -1,0 +1,50 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 1170px;
+  width: 100%;
+  height: 100vh;
+  margin: auto;
+}
+
+.addButton {
+  background-color: aqua;
+}
+.col {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+.form-control {
+  width: 350px;
+}
+
+button {
+  margin-left: 30px;
+  margin-bottom: 50px;
+}
+
+.table {
+}
+
+.cartListTable {
+  margin-left: 50px;
+  flex-basis: 50%;
+}
+
+.productListTable{
+  flex-basis: 50%;
+}
+
+.productListTable td:hover {
+  cursor:pointer
+}
+
+.twoList{
+  display:flex;
+}

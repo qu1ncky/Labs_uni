@@ -1,0 +1,108 @@
+#main {
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#video_screen {
+  display: flex;
+  justify-content: center;
+}
+
+#horeses {
+  width: 80%;
+  height: 540px;
+}
+
+.reflrections_warpper {
+  padding-top: 2rem;
+}
+.reflrections-title {
+  font-size: 7em;
+  line-height: 6rem;
+  text-align: center;
+  font-family: "Times New Roman", serif;
+}
+.reverse {
+  transform: rotateX(180deg);
+  color: #ccd1d7;
+}
+.black-background {
+  width: 100%;
+  max-width: 1440px;
+  height: 560px;
+  background-color: black;
+  margin-top: 4em;
+}
+
+.black-block-text {
+  color: white;
+  letter-spacing: 8px;
+  line-height: 0.5px;
+  font-family: "Times New Roman", serif;
+  text-align: center;
+  padding-top: 2em;
+}
+
+#black-text-p2 {
+  padding-top: 35px;
+}
+#black-text-p3 {
+  padding-top: 35px;
+}
+
+.two-images-first {
+  width: 100%;
+  margin-top: 35px;
+  display: flex;
+  justify-content: space-between;
+}
+#horses-picture {
+  width: 100%;
+}
+.image-horses {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+.two-images-second {
+  margin-top: 35px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.two-images-third {
+  margin-top: 35px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.black-block-end {
+  width: 100%;
+  max-width: 1440px;
+  height: 300px;
+  background-color: black;
+  margin-top: 60px;
+  display: flex;
+}
+
+.text-in-block {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-top: 55px;
+}
+
+.reflections-in-block {
+  font-size: 7em;
+  line-height: 6rem;
+  text-align: center;
+  font-family: "Times New Roman", serif;
+  color: white;
+}
+.reverse-in-block {
+  transform: rotateX(180deg);
+  color: #ccd1d7;
+}

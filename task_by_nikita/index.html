@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>Магазин</h1>
+    <form>
+      <div class="col">
+        <div class="col">
+          <input type="text" class="form-control" id="nameInput" placeholder="Название продукта" />
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" id="priceInput" placeholder="Цена" />
+        </div>
+      </div>
+    </form>
+    <button type="button" class="btn btn-outline-primary" id="addButton">Добавить</button>
+
+
+    <div class="twoList">
+      <div class="productListTable">
+        <table class="table">
+          <h2>Список товаров</h2>
+          <thead>
+            <tr>
+              <th scope="col">Название</th>
+              <th scope="col">Цена (руб)</th>
+            </tr>
+          </thead>
+          <tbody id="listBody">
+          </tbody>
+        </table>
+        <button type="button" class="btn btn-outline-primary" id="addButton">Добавить в корзину</button>
+      </div>
+
+      <div class="cartListTable">
+        <table class="table">
+          <h2>Корзина</h2>
+          <thead>
+            <tr>
+              <th scope="col">Продукт</th>
+              <th scope="col">Цена (руб)</th>
+            </tr>
+          </thead>
+          <tbody id="cartBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+
+  </div>
+
+
+
+
+
+  </div>
+  <script src="script.js"></script>
+  <script src="https://replit.com/public/js/replit-badge-v2.js" theme="dark" position="bottom-right"></script>
+</body>
+
+</html>
